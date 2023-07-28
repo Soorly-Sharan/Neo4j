@@ -1,5 +1,5 @@
 from django.db import models
-from neomodel import StructuredNode, StringProperty, IntegerProperty,UniqueIdProperty, RelationshipTo, BooleanProperty
+from neomodel import *#StructuredNode, StringProperty, IntegerProperty,UniqueIdProperty, RelationshipTo, BooleanProperty
 
 # Create your models here.
 
@@ -9,18 +9,18 @@ class PERSON(StructuredNode):
 
     rationCardNo = StringProperty()
     genderCode = StringProperty()
-    relationsipCode = StringProperty()
-    relationshipName = StringProperty()
+    relationshipCode = StringProperty()
+    #relationshipName = StringProperty()
     uid = StringProperty(unique_index=True)
     membernameEn = StringProperty()
-    membernameLL = StringProperty()
+    #membernameLL = StringProperty()
     memberDOB = StringProperty()
     motherNameEn = StringProperty()
-    motherNameLL =StringProperty()
+    #motherNameLL =StringProperty()
     fatherNameEN = StringProperty()
-    fatherNameLl = StringProperty()
+    #fatherNameLl = StringProperty()
     SpouseEn = StringProperty()
-    SpouseLL = StringProperty()
+    #SpouseLL = StringProperty()
     nationality = StringProperty()
     mobileNo = StringProperty()
     bankAccountNo = StringProperty()
@@ -46,18 +46,24 @@ class PERSON(StructuredNode):
     isHouseHoldMember1 = StringProperty()
     shareDate = StringProperty()
     reason = StringProperty()
+    wife = RelationshipTo('PERSON', 'WIFE')
+    husband = RelationshipTo('PERSON', 'HUSBAND')
     #hasFam = StringProperty(default=False)
 
 
 class FAMILY(StructuredNode):
 
-    name = StringProperty(unique_index=True)
+    rationCardNo = StringProperty(unique_index=True)
 
     #RELATIONSHIP
-    HOF = RelationshipTo(PERSON,'HOF')
-    wife = RelationshipTo(PERSON,'WIFE')
-    son  = RelationshipTo(PERSON,'SON')
-    daughter = RelationshipTo(PERSON,'DAUGHTER')
-
+    spouse = RelationshipTo(PERSON,'SPOUSE')
+    children = RelationshipTo(PERSON, 'CHILDREN')
+    son  = RelationshipTo('FAMILY','SON')
+    daughter = RelationshipTo('FAMILY','DAUGHTER')
+    father = RelationshipTo(PERSON, 'FATHER')
+    mother = RelationshipTo(PERSON, 'MOTHER')
+    d_i_l = RelationshipTo(PERSON, 'DAUGHTER IN LAW')
+    grand_son = RelationshipTo(PERSON, 'GRAND SON')
+    grand_daughter = RelationshipTo(PERSON, 'GRAND DAUGHTER')
 
 
