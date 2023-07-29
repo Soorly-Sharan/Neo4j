@@ -101,11 +101,13 @@ class AddPerson(generics.GenericAPIView):
                 
             elif(12 == person_data['relationshipCode'] and 'M' == person.genderCode):
                 family.children.connect(person)
+                family_dict[person.rationCardNo]['son'] = person
                 family.save()
                 
 
             elif(13 == person_data['relationshipCode'] and 'F' == person.genderCode):
                 family.children.connect(person)
+                family_dict[person.rationCardNo]['daughter'] = person
                 family.save()
             
             elif(18 == person_data['relationshipCode'] and 'F' == person.genderCode):
@@ -116,36 +118,41 @@ class AddPerson(generics.GenericAPIView):
                 family.save()
             
             #print(family_dict)
-            fam = family_dict.values()
-            for f in fam:
-                print(f)
-                break
-                # f['father'].wife.connect(f['mother'])
-                # f['mother'].husband.connect(f['father'])
+        fam = family_dict.values()
+        for f in fam:
+            #print(f)
+            if('father' in f.keys()) and ('mother' in f.keys()):
+                f['father'].wife.connect(f['mother'])
+                f['mother'].husband.connect(f['father'])
+                f['father'].save()
+                f['mother'].save()
+                if('son' in f.keys()):
+                    f['father'].son.connect(f['son'])
+                    f['father'].save()
+                    f['mother'].son.connect(f['son'])
+                    f['mother'].save()
+                if('daughter' in f.keys()):
+                    f['father'].daughter.connect(f['daughter'])
+                    f['father'].save()
+                    f['mother'].daughter.connect(f['daughter'])
+                    f['mother'].save()
 
+            elif('father' in f.keys()) and ('son' in f.keys()):
+                f['father'].son.connect(f['son'])
+                f['father'].save() 
+            
+            elif('father' in f.keys()) and ('daughter' in f.keys()):
+                f['father'].daughter.connect(f['daughter'])
+                f['father'].save()
 
-
-
-            # for f in fam:
-            #     for key in f[1]:
-            #         if key == 'father':
-            #             father_list.append(f[1][key])
-            #         else:
-            #             mother_list.append(f[1][key])
-
-            # #print(family_dict)
-            # for father in father_list:
-            #     for mother in mother_list:
-            #         if((person.membernameEn == mother.membernameEn) and (person.membernameEn == father.membernameEn)) and (father.houseNoEN == mother.houseNoEN):
-            #             husb = PERSON.nodes.get(membernameEn = father.membenameEn)
-            #             wif = PERSON.nodes.get(membernameEn = mother.membernameEn)
-            #             # person.husband.connect(husb)
-            #             # person.wife.connect(wif)
-            #             print(type(husb))
-              
-           
-
-           
+            elif('mother' in f.keys()) and ('son' in f.keys()):
+                f['mother'].son.connect(f['son'])
+                f['mother'].save() 
+            
+            elif('mother' in f.keys()) and ('daughter' in f.keys()):
+                f['mother'].daughter.connect(f['daughter'])
+                f['mother'].save()
+                
             
         return Response(200)
             

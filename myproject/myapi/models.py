@@ -48,7 +48,9 @@ class PERSON(StructuredNode):
     reason = StringProperty()
     wife = RelationshipTo('PERSON', 'WIFE')
     husband = RelationshipTo('PERSON', 'HUSBAND')
-    #hasFam = StringProperty(default=False)
+    son = RelationshipTo('PERSON', 'SON')
+    daughter = RelationshipTo('PERSON', 'DAUGHTER')
+    
 
 
 class FAMILY(StructuredNode):
@@ -58,8 +60,6 @@ class FAMILY(StructuredNode):
     #RELATIONSHIP
     spouse = RelationshipTo(PERSON,'SPOUSE')
     children = RelationshipTo(PERSON, 'CHILDREN')
-    son  = RelationshipTo('FAMILY','SON')
-    daughter = RelationshipTo('FAMILY','DAUGHTER')
     father = RelationshipTo(PERSON, 'FATHER')
     mother = RelationshipTo(PERSON, 'MOTHER')
     d_i_l = RelationshipTo(PERSON, 'DAUGHTER IN LAW')
